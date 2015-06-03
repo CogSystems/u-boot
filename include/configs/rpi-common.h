@@ -125,6 +125,8 @@
 #define CONFIG_CMD_MMC
 #define CONFIG_PARTITION_UUIDS
 #define CONFIG_CMD_PART
+#define CONFIG_CMD_ELF
+#define CONFIG_TFTP_PORT
 
 /* Device tree support */
 #define CONFIG_OF_BOARD_SETUP

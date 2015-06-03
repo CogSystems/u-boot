@@ -1,4 +1,5 @@
 #define DEBUG
+#undef DEBUG
 
 /*
  * Copyright (C) 2012 Oleksandr Tymoshenko <gonzo@freebsd.org>
