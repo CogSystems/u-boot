@@ -127,6 +127,7 @@
 #define CONFIG_CMD_PART
 #define CONFIG_CMD_ELF
 #define CONFIG_TFTP_PORT
+#define CONFIG_CMD_JTAG
 
 /* Device tree support */
 #define CONFIG_OF_BOARD_SETUP
