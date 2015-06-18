@@ -386,6 +386,71 @@ static void set_clock(void)
 		printf("CPU:   Switch DDR clock to %dMHz failed\n", dramclk);
 }
 
+#ifdef CONFIG_USB_EHCI_MX5
+#define MX51EVK_USBH1_HUB_RST	IMX_GPIO_NR(1, 7)
+#define MX51EVK_USBH1_STP	IMX_GPIO_NR(1, 27)
+#define MX51EVK_USB_CLK_EN_B	IMX_GPIO_NR(2, 1)
+#define MX51EVK_USB_PHY_RESET	IMX_GPIO_NR(2, 5)
+
+static void setup_usb_h1(void)
+{
+	imx_iomux_v3_setup_pad(MX53_PAD_GPIO_0__GPIO1_0);
+#if 0
+	static const iomux_v3_cfg_t usb_h1_pads[] = {
+		MX53_PAD_USBH1_CLK__USBH1_CLK,
+		MX53_PAD_USBH1_DIR__USBH1_DIR,
+		MX53_PAD_USBH1_STP__USBH1_STP,
+		MX53_PAD_USBH1_NXT__USBH1_NXT,
+		MX53_PAD_USBH1_DATA0__USBH1_DATA0,
+		MX53_PAD_USBH1_DATA1__USBH1_DATA1,
+		MX53_PAD_USBH1_DATA2__USBH1_DATA2,
+		MX53_PAD_USBH1_DATA3__USBH1_DATA3,
+		MX53_PAD_USBH1_DATA4__USBH1_DATA4,
+		MX53_PAD_USBH1_DATA5__USBH1_DATA5,
+		MX53_PAD_USBH1_DATA6__USBH1_DATA6,
+		MX53_PAD_USBH1_DATA7__USBH1_DATA7,
+
+		NEW_PAD_CTRL(MX51_PAD_GPIO1_7__GPIO1_7, 0), /* H1 hub reset */
+		MX53_PAD_EIM_D17__GPIO2_1,
+		MX53_PAD_EIM_D21__GPIO2_5, /* PHY reset */
+	};
+
+	imx_iomux_v3_setup_multiple_pads(usb_h1_pads, ARRAY_SIZE(usb_h1_pads));
+#endif
+}
+
+int board_ehci_hcd_init(int port)
+{
+#if 0
+	/* Set USBH1_STP to GPIO and toggle it */
+	imx_iomux_v3_setup_pad(NEW_PAD_CTRL(MX51_PAD_USBH1_STP__GPIO1_27,
+						MX51_USBH_PAD_CTRL));
+
+	gpio_direction_output(MX51EVK_USBH1_STP, 0);
+	gpio_direction_output(MX51EVK_USB_PHY_RESET, 0);
+	mdelay(10);
+	gpio_set_value(MX51EVK_USBH1_STP, 1);
+
+	/* Set back USBH1_STP to be function */
+	imx_iomux_v3_setup_pad(MX51_PAD_USBH1_STP__USBH1_STP);
+
+	/* De-assert USB PHY RESETB */
+	gpio_set_value(MX51EVK_USB_PHY_RESET, 1);
+
+	/* Drive USB_CLK_EN_B line low */
+	gpio_direction_output(MX51EVK_USB_CLK_EN_B, 0);
+
+	/* Reset USB hub */
+	gpio_direction_output(MX51EVK_USBH1_HUB_RST, 0);
+	mdelay(2);
+	gpio_set_value(MX51EVK_USBH1_HUB_RST, 1);
+#endif
+	/* Enable USB_H1_VBUS power with GPIO1_0 */
+	gpio_direction_output(IMX_GPIO_NR(1, 0), 1);
+	return 0;
+}
+#endif
+
 int board_early_init_f(void)
 {
 	setup_iomux_unused_nc();
@@ -393,6 +458,9 @@ int board_early_init_f(void)
 	setup_iomux_sd();
 	setup_iomux_led();
 	setup_iomux_pinheader();
+#ifdef CONFIG_USB_EHCI_MX5
+	setup_usb_h1();
+#endif
 	set_clock();
 	return 0;
 }
