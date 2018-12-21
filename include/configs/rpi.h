@@ -170,5 +170,7 @@
 	ENV_MEM_LAYOUT_SETTINGS \
 	BOOTENV
 
+#define CONFIG_TFTP_PORT
+#define CONFIG_SYS_BOOTM_LEN     (64 << 20)
 
 #endif
