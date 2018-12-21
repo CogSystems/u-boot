@@ -164,6 +164,12 @@
 	func(DHCP, dhcp, na)
 #include <config_distro_bootcmd.h>
 
+#define D4_ENV_SETTINGS \
+	"autoload=no\0" \
+	"d4_boot_image=d4.img\0" \
+	"d4_boot_partition=1\0" \
+	"bootcmd=if load mmc 0:${d4_boot_partition} ${loadaddr} ${d4_boot_image}; then bootm; fi\0"
+
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	"dhcpuboot=usb start; dhcp u-boot.uimg; bootm\0" \
 	ENV_DEVICE_SETTINGS \
