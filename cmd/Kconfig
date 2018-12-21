@@ -729,6 +729,11 @@ config CMD_GPIO
 	help
 	  GPIO support.
 
+config CMD_JTAG
+	bool "jtag"
+	help
+	  Raspberry Pi JTAG pinmux support.
+
 config CMD_FDC
 	bool "fdcboot - Boot from floppy device"
 	help

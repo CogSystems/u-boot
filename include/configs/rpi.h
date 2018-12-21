@@ -168,9 +168,11 @@
 	"dhcpuboot=usb start; dhcp u-boot.uimg; bootm\0" \
 	ENV_DEVICE_SETTINGS \
 	ENV_MEM_LAYOUT_SETTINGS \
+	D4_ENV_SETTINGS \
 	BOOTENV
 
 #define CONFIG_TFTP_PORT
 #define CONFIG_SYS_BOOTM_LEN     (64 << 20)
+#define CONFIG_CMD_JTAG 1
 
 #endif
