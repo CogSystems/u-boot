@@ -260,11 +260,10 @@ static void set_fdtfile(void)
  */
 static void set_fdt_addr(void)
 {
-	if (getenv("fdt_addr"))
+	if (fdt_magic(fw_dtb_pointer) != FDT_MAGIC) {
+		setenv("fdt_addr", NULL);
 		return;
-
-	if (fdt_magic(fw_dtb_pointer) != FDT_MAGIC)
-		return;
+	}
 
 	setenv_hex("fdt_addr", fw_dtb_pointer);
 }
